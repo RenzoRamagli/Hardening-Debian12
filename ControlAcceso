@@ -9,12 +9,7 @@ apt install ufw
 ufw enable
 	
 # Ensure iptables-persistent is not installed.
-apt purge iptables-persistent 
-
-# Ensure auditd is installed.
-apt install auditd audispd-plugins 
-# Ensure auditd service is enabled.
-systemctl --now enable auditd 
+apt purge iptables-persistent
 
 # Ensure rsyslog is installed.
 apt install rsyslog 
