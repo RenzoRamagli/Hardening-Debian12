@@ -1,0 +1,165 @@
+#!/bin/bash
+
+set -e
+echo "[+] Comenzando hardenizado de contraseñas en Debian 12..."
+
+# Verifica que el script se ejecute como ROOT
+if [[ $EUID -ne 0 ]]; then
+  echo "[!] Este script debe ejecutarse con usuario ROOT!"
+  exit 1
+fi
+
+
+# Actualiza paquetes encargados de la autenticación. 
+apt upgrade -qq libpam-runtime 
+apt upgrade -qq libpam-modules 
+
+# Instala paquete encargado de la calidad de contraseñas.  
+apt-get install -qq -y libpam-pwquality
+
+# Configuración modulo pam_UNIX para la gestión de autenticación
+cat > /usr/share/pam-configs/unix <<EOF
+Name: Unix authentication
+Default: yes
+Priority: 256
+Auth-Type: Primary
+Auth:
+        [success=end default=ignore]    pam_unix.so try_first_pass
+Auth-Initial:
+        [success=end default=ignore]    pam_unix.so
+Account-Type: Primary
+Account:
+        [success=end new_authtok_reqd=done default=ignore]      pam_unix.so
+Account-Initial:
+        [success=end new_authtok_reqd=done default=ignore]      pam_unix.so
+Session-Type: Additional
+Session:
+        required        pam_unix.so
+Session-Initial:
+        required        pam_unix.so
+Password-Type: Primary
+Password:
+        [success=end default=ignore]    pam_unix.so obscure use_authtok try_first_pass sha512
+Password-Initial:
+        [success=end default=ignore]    pam_unix.so obscure sha512
+EOF
+
+pam-auth-update --enable unix
+
+# Configuración modulos pam_FAILLOCK.so para bloqueos ante logeos fallidos
+cat > /usr/share/pam-configs/faillock <<EOF
+Name: Enable pam_faillock to deny access
+Default: yes
+Priority: 0
+Auth-Type: Primary
+Auth:
+     [default=die] pam_faillock.so authfail
+EOF
+
+cat > /usr/share/pam-configs/faillock_notify <<EOF
+Name: Notify of failed login attempts and reset count upon success
+Default: yes
+Priority: 1024
+Auth-Type: Primary
+Auth:
+     requisite pam_faillock.so preauth
+Account-Type: Primary
+Account:
+     required pam_faillock.so
+EOF
+
+pam-auth-update --enable faillock
+pam-auth-update --enable faillock_notify
+
+
+# Habilitando modulo pam_PWQUALITY para gestión de calidad de contraseñas
+pam-auth-update --enable pwquality 
+
+# Configurando modulo pam_PWHISTORY para gestionar el historial de contraseñas
+cat > /usr/share/pam-configs/pwhistory <<EOF
+Name: pwhistory password history checking
+Default: yes
+Priority: 1024
+Password-Type: Primary
+Password:
+    requisite pam_pwhistory.so remember=24 enforce_for_root try_first_pass use_authtok
+EOF
+
+pam-auth-update --enable pwhistory
+
+
+# Configuración de bloqueos ante logeos fallidos
+FAILLOCK_CONF="/etc/security/faillock.conf"
+declare -a faillock_config=(
+  "audit"
+  "deny = 4"
+  "fail_interval = 1200"
+  "unlock_time = 0"
+  "even_deny_root"
+  "root_unlock_time = 1200"
+)
+
+touch "$FAILLOCK_CONF"
+
+for setting in "${faillock_config[@]}"; do
+  key=$(echo "$setting" | cut -d '=' -f1 | xargs)
+  
+  if grep -qE "^\s*#?\s*$key" "$FAILLOCK_CONF"; then
+    sed -i "s|^\s*#\?\s*$key.*|$setting|" "$FAILLOCK_CONF"
+  else
+    echo "$setting" >> "$FAILLOCK_CONF"
+  fi
+done
+
+
+
+# Configuración de calidad para contraseñas seguras
+PWQUALITY_CONF="/etc/security/pwquality.conf"
+declare -a pwquality_settings=(
+  "difok = 3"
+  "minlen = 14"
+  "minclass = 4"
+  "maxrepeat = 3"
+  "maxsequence = 3"
+  "dictcheck = 1"
+  "enforcing = 1"
+  "enforce_for_root"
+)
+
+touch "$PWQUALITY_CONF"
+
+for setting in "${pwquality_settings[@]}"; do
+  key=$(echo "$setting" | cut -d '=' -f1 | xargs)
+  
+  if grep -qE "^\s*#?\s*$key" "$PWQUALITY_CONF"; then
+    sed -i "s|^\s*#\?\s*$key.*|$setting|" "$PWQUALITY_CONF"
+  else
+    echo "$setting" >> "$PWQUALITY_CONF"
+  fi
+done
+
+
+# Configuración de expiración de contraseñas para usuarios nuevos
+sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS   90/' /etc/login.defs
+sed -i 's/^PASS_MIN_DAYS.*/PASS_MIN_DAYS   15/' /etc/login.defs
+sed -i 's/^PASS_WARN_AGE.*/PASS_WARN_AGE   7/' /etc/login.defs
+useradd -D -f 15
+
+ROOT_USER=$(awk -F: '$3 == 0 {print $1}' /etc/passwd)
+USUARIOS=$(awk -F: '$3 >= 1000 && $3 < 60000 && $7 ~ /(\/bin\/bash|\/bin\/sh)/ {print $1}' /etc/passwd)
+USUARIOS+=" $ROOT_USER"
+
+#Configuracion de expiración de contraseñas para usuarios existentes
+for usuario in $USUARIOS; do
+  chage --maxdays 90 "$usuario"
+  chage --mindays 15 "$usuario"
+  chage --inactive 15 "$usuario"
+  passwd -e "$usuario"
+done
+
+# Aplicando --warndays 7 a todos los usuarios, incluidos los del sistema"
+for user in $(cut -d: -f1 /etc/shadow); do
+    chage --warndays 7 "$user"
+done
+
+echo "[✔] Hardenizado de contraseñas completado correctamente..."
