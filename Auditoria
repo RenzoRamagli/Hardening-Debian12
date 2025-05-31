@@ -2,3 +2,13 @@
 apt install auditd audispd-plugins 
 # Ensure auditd service is enabled.
 systemctl --now enable auditd 
+
+
+
+
+# Ensure sudo log file exists.
+echo 'Defaults logfile="/var/log/sudo.log"' > /etc/sudoers.d/log_sudo
+chmod 440 /etc/sudoers.d/log_sudo
+touch /var/log/sudo.log
+chmod 600 /var/log/sudo.log
+chown root:root /var/log/sudo.log
