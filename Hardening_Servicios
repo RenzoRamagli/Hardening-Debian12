@@ -1,0 +1,124 @@
+#!/bin/bash
+set -e
+
+echo "[+] Comenzando hardenizado de servicios en Debian 12..."
+
+# Ensure Avahi Server is not installed.
+if dpkg -s avahi-daemon &>/dev/null; then
+    systemctl stop avahi-daemon.service 2>/dev/null
+    systemctl stop avahi-daemon.socket 2>/dev/null
+    apt purge -y avahi-daemon 2>/dev/null
+fi
+
+# Ensure CUPS is not installed.
+if dpkg -s cups &>/dev/null; then
+    apt purge -y cups 2>/dev/null
+fi
+
+# Ensure DHCP Server is not installed.
+if dpkg -s isc-dhcp-server &>/dev/null; then
+    apt purge -y isc-dhcp-server 2>/dev/null
+fi
+
+# Ensure LDAP Server is not installed.
+if dpkg -s slapd &>/dev/null; then
+    apt purge -y slapd 2>/dev/null
+fi
+
+# Ensure NFS Server is not installed.
+if dpkg -s nfs-kernel-server &>/dev/null; then
+    apt purge -y nfs-kernel-server 2>/dev/null
+fi
+
+# Ensure DNS Server is not installed.
+if dpkg -s bind9 &>/dev/null; then
+    apt purge -y bind9 2>/dev/null
+fi
+
+# Ensure FTP Server is not installed.
+if dpkg -s vsftpd &>/dev/null; then
+    apt purge -y vsftpd 2>/dev/null
+fi
+
+# Ensure HTTP Server is not installed.
+if dpkg -s apache2 &>/dev/null; then
+    apt purge -y apache2 2>/dev/null
+fi
+
+# Ensure IMAP Server is not installed.
+if dpkg -s dovecot-imapd &>/dev/null; then
+    apt purge -y dovecot-imapd 2>/dev/null
+fi
+
+# Ensure POP3 Server is not installed.
+if dpkg -s dovecot-pop3d &>/dev/null; then
+    apt purge -y dovecot-pop3d 2>/dev/null
+fi
+
+# Ensure SAMBA Server is not installed.
+if dpkg -s samba &>/dev/null; then
+    apt purge -y samba 2>/dev/null
+fi
+
+# Ensure HTTP Proxy Server is not installed.
+if dpkg -s squid &>/dev/null; then
+    apt purge -y squid 2>/dev/null
+fi
+
+# Ensure SNMP Server is not installed.
+if dpkg -s snmpd &>/dev/null; then
+    apt purge -y snmpd 2>/dev/null
+fi
+
+# Ensure RSYNC Server is not installed.
+if dpkg -s rsync &>/dev/null; then
+    apt purge -y rsync 2>/dev/null
+fi
+
+# Ensure NIS Server is not installed.
+if dpkg -s nis &>/dev/null; then
+    apt purge -y nis 2>/dev/null
+fi
+
+# Ensure RSH Client is not installed.
+if dpkg -s rsh-client &>/dev/null; then
+    apt purge -y rsh-client 2>/dev/null
+fi
+
+# Ensure Talk Client is not installed.
+if dpkg -s talk &>/dev/null; then
+    apt purge -y talk 2>/dev/null
+fi
+
+# Ensure Telnet Client is not installed.
+if dpkg -s telnet &>/dev/null; then
+    apt purge -y telnet 2>/dev/null
+fi
+
+# Ensure LDAP Client is not installed.
+if dpkg -s ldap-utils &>/dev/null; then
+    apt purge -y ldap-utils 2>/dev/null
+fi
+
+# Ensure RCP is not installed.
+if dpkg -s rpcbind &>/dev/null; then
+    apt purge -y rpcbind 2>/dev/null
+fi
+
+# Ensure nftables is not installed.
+if dpkg -s nftables &>/dev/null; then
+    apt purge -y nftables 2>/dev/null
+fi
+
+# Disable Automonting.
+if dpkg -s autofs &>/dev/null; then
+    apt purge -y autofs 2>/dev/null
+fi
+
+# Ensure PRELINK is disabled.
+if dpkg -s prelink &>/dev/null; then
+    prelink -ua 2>/dev/null
+    apt purge -y autofs 2>/dev/null
+fi
+
+echo "[✔] Servicios innecesarios desinstalados correctamente..."
