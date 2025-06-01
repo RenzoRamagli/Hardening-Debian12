@@ -3,12 +3,8 @@
 set -e
 echo "[+] Comenzando hardenizado de contraseñas en Debian 12..."
 
-# Verifica que el script se ejecute como ROOT
-if [[ $EUID -ne 0 ]]; then
-  echo "[!] Este script debe ejecutarse con usuario ROOT!"
-  exit 1
-fi
-
+# Se ejeutará el script como ROOT
+sudo su
 
 # Actualiza paquetes encargados de la autenticación. 
 apt upgrade -qq libpam-runtime 
