@@ -4,7 +4,7 @@ set -e
 echo "[+] Aplicando actualizaciones en Debian 12..."
 
 apt-mark hold openssh-server
-apt update -y
-apt upgrade -y
+sudo apt update -y
+sudo apt upgrade -y
 
 echo "[✔] Actualizaciones realizadas correctamente..."
