@@ -22,7 +22,7 @@ sudo systemctl --now enable rsyslog
 # Ensure permissions on /etc/ssh/sshd_config are configured.
 chown root:root /etc/ssh/sshd_config
 chmod og-rwx /etc/ssh/sshd_config
-# Change SSH Port to :25.
+# Change SSH Port to :2222.
 sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config
 sed -i 's/^Port 22/Port 2222/' /etc/ssh/sshd_config
 # Ensure SSH X11 forwarding is disabled.
