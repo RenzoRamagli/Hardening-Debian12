@@ -20,31 +20,34 @@ sudo apt install -y rsyslog
 sudo systemctl --now enable rsyslog
 
 # Ensure permissions on /etc/ssh/sshd_config are configured.
-chown root:root /etc/ssh/sshd_config
-chmod og-rwx /etc/ssh/sshd_config
+sudo chown root:root /etc/ssh/sshd_config
+sudo chmod og-rwx /etc/ssh/sshd_config
 # Change SSH Port to :2222.
-sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config
-sed -i 's/^Port 22/Port 2222/' /etc/ssh/sshd_config
+sudo sed -i 's/^#Port 22/Port 2222/' /etc/ssh/sshd_config
+sudo sed -i 's/^Port[ \t]\+22$/Port 2222/' /etc/ssh/sshd_config
 # Ensure SSH X11 forwarding is disabled.
-sed -i 's/^#X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
-sed -i 's/^X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
+sudo sed -i 's/^X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
 # Ensure SSH MaxAuthTries is set to 4 or less.
-sed -i 's/^#MaxAuthTries 6/MaxAuthTries 4/' /etc/ssh/sshd_config
-sed -i 's/^MaxAuthTries 6/MaxAuthTries 4/' /etc/ssh/sshd_config
+sudo sed -i 's/^#MaxAuthTries 6/MaxAuthTries 4/' /etc/ssh/sshd_config
+sudo sed -i 's/^MaxAuthTries 6/MaxAuthTries 4/' /etc/ssh/sshd_config
 # Ensure SSH root login is disabled.
-sed -i 's/^#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
-sed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 # Ensure SSH access is limited.
-echo "AllowUsers user" >> /etc/ssh/sshd_config
+#sudo echo "AllowUsers user" >> /etc/ssh/sshd_config
 # Ensure SSH warning banner is configured.
-sed -i 's|^#*Banner .*|Banner /etc/issue.net|' /etc/ssh/sshd_config
-grep -q "^Banner /etc/issue.net" /etc/ssh/sshd_config || echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
+sudo sed -i 's|^#*Banner .*|Banner /etc/issue.net|' /etc/ssh/sshd_config
+sudo grep -q "^Banner /etc/issue.net" /etc/ssh/sshd_config || echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 # Ensure SSH AllowTcpForwarding is disabled.
-sed -i 's/^#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
-sed -i 's/^AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
+sudo sed -i 's/^AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config
 # Ensure SSH MaxStartups is configured.
-sed -i 's/^#MaxStartups 10:30:100/maxstartups 9:29:99/' /etc/ssh/sshd_config
-sed -i 's/^MaxStartups 10:30:100/maxstartups 9:29:99/' /etc/ssh/sshd_config
+sudo sed -i 's/^#MaxStartups 10:30:100/maxstartups 9:29:99/' /etc/ssh/sshd_config
+sudo sed -i 's/^MaxStartups 10:30:100/maxstartups 9:29:99/' /etc/ssh/sshd_config
+
+# Aplica contraseña obligatoria para ingresar
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo grep -q '^AuthenticationMethods' /etc/ssh/sshd_config || echo 'AuthenticationMethods publickey,password' | sudo tee -a /etc/ssh/sshd_config > /dev/null
 
 sudo systemctl restart ssh
 sudo systemctl restart sshd
