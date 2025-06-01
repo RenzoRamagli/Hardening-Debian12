@@ -4,22 +4,20 @@ set -e
 echo "[+] Comenzando hardenizado de control de acceso y auditoría en Debian 12..."
 
 # Ensure Uncomplicated Firewall is installed.
-apt install -y ufw
+sudo apt install -y ufw
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 2222/tcp
-
 # Ensure ufw service is enabled.
-ufw enable
+sudo ufw --force enable
 	
 # Ensure iptables-persistent is not installed.
-#apt purge iptables-persistent
+sudo apt purge iptables-persistent
 
 # Ensure rsyslog is installed.
-apt install -y rsyslog 
+sudo apt install -y rsyslog 
 # Ensure rsyslog Service is enabled.
-systemctl --now enable rsyslog
-
+sudo systemctl --now enable rsyslog
 
 # Ensure permissions on /etc/ssh/sshd_config are configured.
 chown root:root /etc/ssh/sshd_config

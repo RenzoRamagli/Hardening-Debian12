@@ -1,9 +1,7 @@
 # Ensure auditd is installed.
-apt install auditd audispd-plugins 
+apt install -y auditd audispd-plugins 
 # Ensure auditd service is enabled.
 systemctl --now enable auditd 
-
-
 
 
 # Ensure sudo log file exists.

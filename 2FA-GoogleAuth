@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Verificar si el script está siendo ejecutado como root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Este script debe ejecutarse como root"
+    exit 1
+fi
+
+# Instalar el paquete necesario
+apt install -y libpam-google-authenticator
+
+# Ejecutar google-authenticator para el usuario actual
+google-authenticator -t -d -f -r 3 -R 30 -w 
+
+# Modificar PAM para SSH
+echo "auth required pam_google_authenticator.so" >> /etc/pam.d/sshd
+
+# Habilitar autenticación por challenge en SSH
+sed -i 's/^KbdInteractiveAuthentication no/ChallengeResponseAuthentication yes/' /etc/ssh/sshd_config
+
+# Reiniciar servicio SSH
+systemctl restart sshd
+systemctl restart ssh
+
+echo "Configuración completada. La autenticación de Google ahora está habilitada."
