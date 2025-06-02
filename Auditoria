@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 # Ensure auditd is installed.
 sudo apt install -y auditd audispd-plugins 
 # Ensure auditd service is enabled.
