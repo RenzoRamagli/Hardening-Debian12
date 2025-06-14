@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+apt-mark hold openssh-server
+sudo apt update -y
+sudo apt upgrade -y
+
+sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-linux-amd64
+sudo chmod +x velociraptor-v0.74.3-linux-amd64
+sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
+
+sudo velociraptor config generate > server.config.yaml
+sudo sed -i 's/^\( *bind_address: \)127\.0\.0\.1/\10.0.0.0/' server.config.yaml
+
+sudo velociraptor --config server.config.yaml user add --role=administrator admin Velocirraptor2025
+
+sudo velociraptor -c server.config.yaml frontend -v
+
+
+
+
