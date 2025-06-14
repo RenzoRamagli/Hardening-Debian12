@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 # Ensure auditd is installed.
@@ -19,8 +20,6 @@ sudo sed -i 's/^\s*max_log_file\s*=.*/max_log_file = 32/' /etc/audit/auditd.conf
 
 # Ensure audit logs are not automatically deleted
 sudo sed -i 's/^\s*max_log_file_action\s*=.*/max_log_file_action = keep_logs/' /etc/audit/auditd.conf
-
-# 
 
 # Ensure sudo log file exists.
 echo 'Defaults logfile="/var/log/sudo.log"' > /etc/sudoers.d/log_sudo
