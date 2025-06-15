@@ -7,7 +7,7 @@ set -e
 
 
 tee -a /home/admin/.ssh/authorized_keys << 'EOF'
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVhf/CMWgbFJ6S5snucKDeVsM17q/4XcxeuTy71WZja admin@ip-10-100-13-15
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM21jzGYAZDaeRr9KEMJtPcvt4xMFcEgUjkI/XcT87kU admin@ip-10-100-13-15
 EOF
 
 sudo chown -R admin:admin /home/admin/.ssh
