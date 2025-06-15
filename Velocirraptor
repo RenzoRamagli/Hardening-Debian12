@@ -15,3 +15,24 @@ sudo sed -i 's/^\( *bind_address: \)127\.0\.0\.1/\10.0.0.0/' server.config.yaml
 sudo velociraptor --config server.config.yaml user add --role=administrator admin Velocirraptor2025
 
 sudo velociraptor -c server.config.yaml frontend -v
+
+
+sudo tee /etc/systemd/system/velociraptor.service > /dev/null <<EOL
+[Unit]
+Description=Velociraptor linux amd64
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=120
+LimitNOFILE=20000
+Environment=LANG=en_US.UTF-8
+ExecStart=/usr/local/bin/velociraptor -c /server.config.yaml gui -v
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now velociraptor
