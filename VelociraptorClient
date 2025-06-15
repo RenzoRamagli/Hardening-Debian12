@@ -6,8 +6,8 @@ set -e
 #sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
 
 
-sudo tee -a /home/admin/.ssh/authorized_keys << 'EOF'
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGRxiyu7mQFAK7+zT4PMRyb9d4X8Hg/4LCQ8WsHzDf8u admin@ip-10-100-13-15
+tee -a /home/admin/.ssh/authorized_keys << 'EOF'
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVhf/CMWgbFJ6S5snucKDeVsM17q/4XcxeuTy71WZja admin@ip-10-100-13-15
 EOF
 
 sudo chown -R admin:admin /home/admin/.ssh
