@@ -34,3 +34,24 @@ EOL
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now velociraptor
+
+
+###########################################################
+
+sudo velociraptor --config /server.config.yaml config client > client.config.yaml
+
+sed -i 's|https://localhost:8001/|https://10.100.13.15:8001/|' client.config.yaml
+
+
+#cat > /home/admin/.ssh/id_ed25519 << 'EOF'
+#-----BEGIN OPENSSH PRIVATE KEY-----
+#b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+#QyNTUxOQAAACBkcYsru5kBQCu/s0+DzEcm/XeF/B4P+CwkPFrB8w3/LgAAAJghCIpcIQiK
+#XAAAAAtzc2gtZWQyNTUxOQAAACBkcYsru5kBQCu/s0+DzEcm/XeF/B4P+CwkPFrB8w3/Lg
+#AAAECuVTX2LFOWUVWPRRRHMazWaMrFQVO1bLz2zerCNHTwFmRxiyu7mQFAK7+zT4PMRyb9
+#d4X8Hg/4LCQ8WsHzDf8uAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
+#----END OPENSSH PRIVATE KEY-----
+#OF
+
+#chmod 600 /home/admin/.ssh/id_ed25519
+#chown admin:admin /home/admin/.ssh/id_ed25519
