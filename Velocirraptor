@@ -14,8 +14,6 @@ sudo sed -i 's/^\( *bind_address: \)127\.0\.0\.1/\10.0.0.0/' server.config.yaml
 
 sudo velociraptor --config server.config.yaml user add --role=administrator admin Velocirraptor2025
 
-sudo velociraptor -c server.config.yaml frontend -v
-
 
 sudo tee /etc/systemd/system/velociraptor.service > /dev/null <<EOL
 [Unit]
