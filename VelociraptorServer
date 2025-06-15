@@ -56,4 +56,3 @@ EOF
 chmod 600 /home/admin/.ssh/id_ed25519
 
 #scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
-
