@@ -38,21 +38,17 @@ sudo systemctl enable --now velociraptor
 
 ###########################################################
 
-sudo velociraptor --config /server.config.yaml config client > /home/admin/client.config.yaml
+#sudo velociraptor --config /server.config.yaml config client > /home/admin/client.config.yaml
 
-sudo sed -i 's|https://localhost:8000/|https://10.100.13.15:8000/|' /home/admin/client.config.yaml
+#sudo sed -i 's|https://localhost:8000/|https://10.100.13.15:8000/|' /home/admin/client.config.yaml
 
 
-cat > /home/admin/.ssh/id_ed25519 << 'EOF'
------BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-QyNTUxOQAAACC1YX/wjFoGxSekubJ7nCg3lbDNe6v+F3MXrk8u9VmY2gAAAJibuibMm7om
-zAAAAAtzc2gtZWQyNTUxOQAAACC1YX/wjFoGxSekubJ7nCg3lbDNe6v+F3MXrk8u9VmY2g
-AAAEDOS/3CpQG/X5CMXjpmBdXaYJdFnq8USeblIfA+LZSSQ7Vhf/CMWgbFJ6S5snucKDeV
-sM17q/4XcxeuTy71WZjaAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
------END OPENSSH PRIVATE KEY-----
-EOF
+#cat > /home/admin/.ssh/id_ed25519 << 'EOF'
 
-chmod 600 /home/admin/.ssh/id_ed25519
+#EOF
+
+#chmod 600 /home/admin/.ssh/id_ed25519
 
 #scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
+
+#ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
