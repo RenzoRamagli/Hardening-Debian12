@@ -57,4 +57,4 @@ EOF
 sudo chmod 600 /home/admin/.ssh/id_ed25519
 sudo chown admin:admin /home/admin/.ssh/id_ed25519
 
-sshpass -p 'ContrasenaProvisoria.ORT25' scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
+#sshpass -p 'ContrasenaProvisoria.ORT25' scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
