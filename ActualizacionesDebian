@@ -13,5 +13,3 @@ sudo chmod 600 /home/admin/.ssh/authorized_keys
 apt-mark hold openssh-server
 sudo apt update -y
 sudo apt upgrade -y
-
-echo "[✔] Actualizaciones realizadas correctamente..."
