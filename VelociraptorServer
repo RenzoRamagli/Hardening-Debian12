@@ -44,7 +44,13 @@ sudo systemctl enable --now velociraptor
 
 
 #cat > /home/admin/.ssh/id_ed25519 << 'EOF'
-
+#-----BEGIN OPENSSH PRIVATE KEY-----
+#b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+#QyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxAAAAJgMibjfDIm4
+#3wAAAAtzc2gtZWQyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxA
+#AAAED3+/SY9ZK+NwdeyJJGSM43glrA0TMIUU1W8euTobG7jIx9zwuZtaygpoTgN0+Y/rKh
+#dNrC/4G4MKQ7FUZ31KPEAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
+#-----END OPENSSH PRIVATE KEY-----
 #EOF
 
 #chmod 600 /home/admin/.ssh/id_ed25519
