@@ -4,6 +4,7 @@ set -e
 apt-mark hold openssh-server
 sudo apt update -y
 sudo apt upgrade -y
+sudo apt install sshpass -y
 
 sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-linux-amd64
 sudo chmod +x velociraptor-v0.74.3-linux-amd64
@@ -38,37 +39,24 @@ sudo systemctl enable --now velociraptor
 
 ###########################################################
 
-#sudo velociraptor --config /server.config.yaml config client > /home/admin/client.config.yaml
+sudo velociraptor --config /server.config.yaml config client > /home/admin/client.config.yaml
 
-#sudo sed -i 's|https://localhost:8000/|https://10.100.13.15:8000/|' /home/admin/client.config.yaml
-
-
-#cat > /home/admin/.ssh/id_ed25519 << 'EOF'
-#-----BEGIN OPENSSH PRIVATE KEY-----
-#b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-#QyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxAAAAJgMibjfDIm4
-#3wAAAAtzc2gtZWQyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxA
-#AAAED3+/SY9ZK+NwdeyJJGSM43glrA0TMIUU1W8euTobG7jIx9zwuZtaygpoTgN0+Y/rKh
-#dNrC/4G4MKQ7FUZ31KPEAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
-#-----END OPENSSH PRIVATE KEY-----
-#EOF
-
-#sudo tee /home/admin/.ssh/id_ed25519 << 'EOF'
-#-----BEGIN OPENSSH PRIVATE KEY-----
-#b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-#QyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxAAAAJgMibjfDIm4
-#3wAAAAtzc2gtZWQyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxA
-#AAAED3+/SY9ZK+NwdeyJJGSM43glrA0TMIUU1W8euTobG7jIx9zwuZtaygpoTgN0+Y/rKh
-#dNrC/4G4MKQ7FUZ31KPEAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
-#-----END OPENSSH PRIVATE KEY-----
-#EOF
-
-#sudo chmod 600 /home/admin/.ssh/id_ed25519
-#sudo chown admin:admin /home/admin/.ssh/id_ed25519
+sudo sed -i 's|https://localhost:8000/|https://10.100.13.15:8000/|' /home/admin/client.config.yaml
 
 
-#chmod 600 /home/admin/.ssh/id_ed25519
+sudo tee /home/admin/.ssh/id_ed25519 << 'EOF'
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxAAAAJgMibjfDIm4
+3wAAAAtzc2gtZWQyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxA
+AAAED3+/SY9ZK+NwdeyJJGSM43glrA0TMIUU1W8euTobG7jIx9zwuZtaygpoTgN0+Y/rKh
+dNrC/4G4MKQ7FUZ31KPEAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
+-----END OPENSSH PRIVATE KEY-----
+EOF
 
-#scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
+sudo chmod 600 /home/admin/.ssh/id_ed25519
+sudo chown admin:admin /home/admin/.ssh/id_ed25519
 
-#ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+sshpass -p 'ContrasenaProvisoria.ORT25' scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
+
+
