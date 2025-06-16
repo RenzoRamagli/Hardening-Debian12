@@ -5,10 +5,25 @@ sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velo
 sudo chmod +x velociraptor-v0.74.3-linux-amd64
 sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
 
-tee -a /home/admin/.ssh/authorized_keys << 'EOF'
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIx9zwuZtaygpoTgN0+Y/rKhdNrC/4G4MKQ7FUZ31KPE admin@ip-10-100-13-15
-EOF
+sudo mkdir /etc/velociraptor
+sudo mv client.config.yaml /etc/velociraptor
 
-sudo chown -R admin:admin /home/admin/.ssh
-sudo chmod 700 /home/admin/.ssh
-sudo chmod 600 /home/admin/.ssh/authorized_keys
+sudo tee /etc/systemd/system/velociraptor.service > /dev/null <<EOL
+[Unit]
+Description=Velociraptor linux amd64
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=120
+LimitNOFILE=20000
+Environment=LANG=en_US.UTF-8
+ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/client.config.yaml client -v
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now velociraptor 

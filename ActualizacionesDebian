@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+apt-mark hold openssh-server
+sudo apt update -y
+sudo apt upgrade -y
+
+
+# Clave pública para instalación de Velocirraptor Client
 tee -a /home/admin/.ssh/authorized_keys << 'EOF'
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIx9zwuZtaygpoTgN0+Y/rKhdNrC/4G4MKQ7FUZ31KPE admin@ip-10-100-13-15
 EOF
@@ -8,8 +14,3 @@ EOF
 sudo chown -R admin:admin /home/admin/.ssh
 sudo chmod 700 /home/admin/.ssh
 sudo chmod 600 /home/admin/.ssh/authorized_keys
-
-
-apt-mark hold openssh-server
-sudo apt update -y
-sudo apt upgrade -y
