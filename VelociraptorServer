@@ -53,6 +53,20 @@ sudo systemctl enable --now velociraptor
 #-----END OPENSSH PRIVATE KEY-----
 #EOF
 
+#sudo tee /home/admin/.ssh/id_ed25519 << 'EOF'
+#-----BEGIN OPENSSH PRIVATE KEY-----
+#b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+#QyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxAAAAJgMibjfDIm4
+#3wAAAAtzc2gtZWQyNTUxOQAAACCMfc8LmbWsoKaE4DdPmP6yoXTawv+BuDCkOxVGd9SjxA
+#AAAED3+/SY9ZK+NwdeyJJGSM43glrA0TMIUU1W8euTobG7jIx9zwuZtaygpoTgN0+Y/rKh
+#dNrC/4G4MKQ7FUZ31KPEAAAAFWFkbWluQGlwLTEwLTEwMC0xMy0xNQ==
+#-----END OPENSSH PRIVATE KEY-----
+#EOF
+
+#sudo chmod 600 /home/admin/.ssh/id_ed25519
+#sudo chown admin:admin /home/admin/.ssh/id_ed25519
+
+
 #chmod 600 /home/admin/.ssh/id_ed25519
 
 #scp -P 2222 -o StrictHostKeyChecking=no /home/admin/client.config.yaml admin@10.100.13.10:/home/admin/
