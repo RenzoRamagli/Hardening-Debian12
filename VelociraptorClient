@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-#sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-linux-amd64
-#sudo chmod +x velociraptor-v0.74.3-linux-amd64
-#sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
+sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-linux-amd64
+sudo chmod +x velociraptor-v0.74.3-linux-amd64
+sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
 
 
 #tee -a /home/admin/.ssh/authorized_keys << 'EOF'
