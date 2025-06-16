@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+sudo sleep 10
+
 sudo wget https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.3-linux-amd64
 sudo chmod +x velociraptor-v0.74.3-linux-amd64
 sudo mv velociraptor-v0.74.3-linux-amd64 /usr/local/bin/velociraptor
