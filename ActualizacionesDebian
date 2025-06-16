@@ -1,7 +1,14 @@
 #!/bin/bash
 set -e
 
-echo "[+] Aplicando actualizaciones en Debian 12..."
+tee -a /home/admin/.ssh/authorized_keys << 'EOF'
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIx9zwuZtaygpoTgN0+Y/rKhdNrC/4G4MKQ7FUZ31KPE admin@ip-10-100-13-15
+EOF
+
+sudo chown -R admin:admin /home/admin/.ssh
+sudo chmod 700 /home/admin/.ssh
+sudo chmod 600 /home/admin/.ssh/authorized_keys
+
 
 apt-mark hold openssh-server
 sudo apt update -y
